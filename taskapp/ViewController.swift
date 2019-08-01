@@ -44,13 +44,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // キーボードを閉じる
         view.endEditing(true)
-        if let searchWord = searchBar.text {
-            print(searchWord)
-        }
 
         //関連オブジェクトから検索
-        let searchedCategory = Array(realm.objects(Task.self).filter("category = %@", searchText.text!))
+        let searchedCategory = realm.objects(Task.self).filter("category = %@", searchText.text!)
         print(searchedCategory)
+        
+        // 検索結果をtaskArray(DB内のタスクが格納されるリスト)に入れる
+        // TableView を更新する
+        taskArray = searchedCategory
+         tableView.reloadData()
         
     }
     
