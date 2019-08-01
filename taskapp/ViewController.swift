@@ -39,22 +39,58 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
- 
-    // サーチバー 検索ボタンをクリック時
+    //  検索結果を絞り込み表示(検索文字列が何もない場合の解消含む)
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // キーボードを閉じる
         view.endEditing(true)
-
-        //関連オブジェクトから検索
-        let searchedCategory = realm.objects(Task.self).filter("category = %@", searchText.text!)
-        print(searchedCategory)
         
-        // 検索結果をtaskArray(DB内のタスクが格納されるリスト)に入れる
-        // TableView を更新する
-        taskArray = searchedCategory
-         tableView.reloadData()
+        // サーチバーが空欄の場合
+        if searchBar.text!.isEmpty {
+            
+            let searchedCategory = realm.objects(Task.self)
+            taskArray = searchedCategory
+            tableView.reloadData()
+            
+        } else {
+            //関連オブジェクトから検索
+            let searchedCategory = realm.objects(Task.self).filter("category = %@", searchText.text!)
+            print(searchedCategory)
+            
+            // 検索結果をtaskArray(DB内のタスクが格納されるリスト)に入れる
+            // TableView を更新する
+            taskArray = searchedCategory
+            tableView.reloadData()
+        }
         
     }
+
+// パターン２(検索文字列が何もない場合の解消)
+//    // サーチバー 検索ボタンをクリック時
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        // キーボードを閉じる
+//        view.endEditing(true)
+//
+//        // サーチバーが空欄の場合
+//        if searchText.text!.isEmpty {
+//
+//            let searchedCategory = realm.objects(Task.self)
+//            taskArray = searchedCategory
+//            tableView.reloadData()
+//
+//        } else {
+//            //関連オブジェクトから検索
+//            let searchedCategory = realm.objects(Task.self).filter("category = %@", searchText.text!)
+//            print(searchedCategory)
+//
+//            // 検索結果をtaskArray(DB内のタスクが格納されるリスト)に入れる
+//            // TableView を更新する
+//            taskArray = searchedCategory
+//            tableView.reloadData()
+//        }
+//
+//    }
+//
+    
     
     // MARK: UITableViewDataSourceプロトコルのメソッド
     // データの数（＝セルの数）を返すメソッド
