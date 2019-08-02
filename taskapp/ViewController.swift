@@ -43,25 +43,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // キーボードを閉じる
         view.endEditing(true)
-        
         // サーチバーが空欄の場合
         if searchBar.text!.isEmpty {
-            
-            let searchedCategory = realm.objects(Task.self)
-            taskArray = searchedCategory
-            tableView.reloadData()
-            
+            taskArray = realm.objects(Task.self).sorted(byKeyPath: "date", ascending: true)
         } else {
             //関連オブジェクトから検索
-            let searchedCategory = realm.objects(Task.self).filter("category = %@", searchText.text!)
-            print(searchedCategory)
-            
             // 検索結果をtaskArray(DB内のタスクが格納されるリスト)に入れる
-            // TableView を更新する
-            taskArray = searchedCategory
-            tableView.reloadData()
+            taskArray = realm.objects(Task.self).filter("category = %@", searchBar.text!).sorted(byKeyPath: "date", ascending: true)
+            print(taskArray)
         }
-        
+        // TableView を更新する
+        tableView.reloadData()
     }
 
 // パターン２(検索文字列が何もない場合の解消)
