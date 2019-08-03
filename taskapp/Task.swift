@@ -33,3 +33,11 @@ class Task: Object {
         return "id"
     }
 }
+
+class Category: Object {
+    @objc dynamic var categoryName = ""
+    @objc dynamic var id = 0
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+}

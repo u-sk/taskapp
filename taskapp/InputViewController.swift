@@ -10,25 +10,46 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class InputViewController: UIViewController {
+class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var titleTextField: UITextField!
 
     @IBOutlet weak var contentsTextView: UITextView!
 
     @IBOutlet weak var datePicker: UIDatePicker!
-
-    @IBOutlet weak var categoryTextField: UITextField!
+ 
+//    @IBOutlet weak var categoryTextField: UITextField!
+    
+    @IBOutlet weak var pickerView: UIPickerView!
     
     let realm = try! Realm()
     
     // taskを定義
     var task: Task!
     
+    // pickerViewデータリスト
+    var dataList = ["勉強", "遊び", "買い物"]
+    
+     // pickerViewで選択した要素の入れ物
+     var selectedCategory: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        // pickerViewDelegate設定
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        
+        // 選択された項目を初期表示
+        if task.category == "勉強" {
+            pickerView.selectRow(0, inComponent: 0, animated: false)
+        } else if task.category ==  "遊び" {
+            pickerView.selectRow(1, inComponent: 0, animated: false)
+        } else {
+            pickerView.selectRow(2, inComponent: 0, animated: false)
+        }
         
         // 背景をタップしたらdismissKeyboardメソッドを呼ぶように設定する
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(dismissKeyboard))
@@ -38,7 +59,10 @@ class InputViewController: UIViewController {
         contentsTextView.text = task.contents
         datePicker.date = task.date
         // カテゴリーを追加
-        categoryTextField.text = task.category
+//        categoryTextField.text = task.category
+        
+        
+        
     }
  
     // 追加する
@@ -48,7 +72,7 @@ class InputViewController: UIViewController {
             self.task.contents = self.contentsTextView.text
             self.task.date = self.datePicker.date
             // カテゴリーを追加
-            self.task.category = self.categoryTextField.text!
+            self.task.category = self.selectedCategory
             self.realm.add(self.task, update: true)
 
             // Realmデータベースファイルまでのパスを表示
@@ -59,6 +83,31 @@ class InputViewController: UIViewController {
         super.viewWillDisappear(animated)
     }
  
+    // PickerViewに関して
+    // UIPickerViewの列の数
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    // UIPickerViewの行数、要素の全数
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return dataList.count
+    }
+    
+    // UIPickerViewに表示する配列
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return dataList[row]
+    }
+    
+    // UIPickerViewのRowが選択された時の挙動
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        // 処理
+        print(" \(dataList[row]) が選択された。")
+//        categoryTextField.text = dataList[row]
+        selectedCategory = dataList[row]
+        
+    }
+    
     // タスクのローカル通知を登録する --- ここから ---
     func setNotification(task: Task) {
         let content = UNMutableNotificationContent()
