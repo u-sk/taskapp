@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		021CF76422F55B1300B25466 /* MakeCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021CF76322F55B1300B25466 /* MakeCategoryViewController.swift */; };
+		021CF76622F6FB5E00B25466 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021CF76522F6FB5E00B25466 /* Category.swift */; };
 		02A61E4E22E9D083009741D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A61E4D22E9D083009741D9 /* AppDelegate.swift */; };
 		02A61E5022E9D083009741D9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A61E4F22E9D083009741D9 /* ViewController.swift */; };
 		02A61E5322E9D083009741D9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02A61E5122E9D083009741D9 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		021CF76322F55B1300B25466 /* MakeCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeCategoryViewController.swift; sourceTree = "<group>"; };
+		021CF76522F6FB5E00B25466 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		02A61E4A22E9D083009741D9 /* taskapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = taskapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A61E4D22E9D083009741D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02A61E4F22E9D083009741D9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				02A61E6222E9D76C009741D9 /* Task.swift */,
+				021CF76522F6FB5E00B25466 /* Category.swift */,
 				02A61E6122E9D70D009741D9 /* New Group */,
 				02A61E4D22E9D083009741D9 /* AppDelegate.swift */,
 				02A61E4F22E9D083009741D9 /* ViewController.swift */,
@@ -225,6 +228,7 @@
 				02A61E5022E9D083009741D9 /* ViewController.swift in Sources */,
 				02A61E4E22E9D083009741D9 /* AppDelegate.swift in Sources */,
 				021CF76422F55B1300B25466 /* MakeCategoryViewController.swift in Sources */,
+				021CF76622F6FB5E00B25466 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

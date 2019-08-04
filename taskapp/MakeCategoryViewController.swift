@@ -47,9 +47,7 @@ class MakeCategoryViewController: UIViewController,  UITextFieldDelegate {
     
     // 追加ボタンが押されたとき
     @IBAction func pushCategoryButton(_ sender: Any) {
-//        self.performSegue(withIdentifier: "toMakeCategory", sender: nil)  ←遷移できず。。。
         print(makeCategoryTextField.text!)
-        
         
         
 //        func prepare(for segue: UIStoryboardSegue, sender: Any?) {

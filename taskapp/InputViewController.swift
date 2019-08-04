@@ -23,14 +23,12 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
     @IBOutlet weak var pickerView: UIPickerView!
     
     let realm = try! Realm()
-    
     // taskを定義
     var task: Task!
     
     // DB内のタスクが格納されるリスト。
-    // 日付近い順\順でソート：降順
     // 以降内容をアップデートするとリスト内は自動的に更新される。
-//    var categoryArray = try! Realm().objects(Category.self).sorted(byKeyPath: "date", ascending: false)
+//    var categoryArray = try! Realm().objects(Category.self).sorted(byKeyPath: "id" , ascending: false)
     
     // pickerViewデータリスト
     var dataList = ["勉強", "遊び", "買い物"]
@@ -65,6 +63,8 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
         datePicker.date = task.date
         // カテゴリーを追加
 //        categoryTextField.text = task.category
+        
+        
     }
  
     // 遷移元に戻る際にタスクの内容をデータベースに保存する
