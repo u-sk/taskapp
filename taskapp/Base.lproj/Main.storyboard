@@ -213,7 +213,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="追加"/>
                                 <connections>
-                                    <action selector="pushCategoryButton:" destination="b1e-kB-XVD" eventType="touchUpInside" id="iKK-e6-OJK"/>
+                                    <action selector="pushCategoryButton:" destination="b1e-kB-XVD" eventType="touchUpInside" id="5Hc-LJ-AuD"/>
                                 </connections>
                             </button>
                         </subviews>

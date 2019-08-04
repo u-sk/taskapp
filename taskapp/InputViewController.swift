@@ -27,9 +27,14 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
     // taskを定義
     var task: Task!
     
+    // DB内のタスクが格納されるリスト。
+    // 日付近い順\順でソート：降順
+    // 以降内容をアップデートするとリスト内は自動的に更新される。
+//    var categoryArray = try! Realm().objects(Category.self).sorted(byKeyPath: "date", ascending: false)
+    
     // pickerViewデータリスト
     var dataList = ["勉強", "遊び", "買い物"]
-    
+
      // pickerViewで選択した要素の入れ物
      var selectedCategory: String = ""
     
@@ -47,7 +52,7 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
             pickerView.selectRow(0, inComponent: 0, animated: false)
         } else if task.category ==  "遊び" {
             pickerView.selectRow(1, inComponent: 0, animated: false)
-        } else {
+        } else if task.category ==  "買い物" {  
             pickerView.selectRow(2, inComponent: 0, animated: false)
         }
         
@@ -60,12 +65,9 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
         datePicker.date = task.date
         // カテゴリーを追加
 //        categoryTextField.text = task.category
-        
-        
-        
     }
  
-    // 追加する
+    // 遷移元に戻る際にタスクの内容をデータベースに保存する
     override func viewWillDisappear(_ animated: Bool) {
         try! realm.write {
             self.task.title = self.titleTextField.text!
