@@ -23,16 +23,19 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
     @IBOutlet weak var pickerView: UIPickerView!
     
     let realm = try! Realm()
+    
     // taskを定義
     var task: Task!
     
+    // Categoryクラス
     // DB内のタスクが格納されるリスト。
     // 以降内容をアップデートするとリスト内は自動的に更新される。
-//    var categoryArray = try! Realm().objects(Category.self).sorted(byKeyPath: "id" , ascending: false)
+    var categoryArray = try! Realm().objects(Category.self)
     
     // pickerViewデータリスト
-    var dataList = ["勉強", "遊び", "買い物"]
-
+//    var dataList = ["勉強", "遊び", "買い物"]
+    var dataList : [String] = []
+    
      // pickerViewで選択した要素の入れ物
      var selectedCategory: String = ""
     
@@ -44,16 +47,25 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
         // pickerViewDelegate設定
         pickerView.delegate = self
         pickerView.dataSource = self
-        
+                
         // 選択された項目を初期表示
-        if task.category == "勉強" {
-            pickerView.selectRow(0, inComponent: 0, animated: false)
-        } else if task.category ==  "遊び" {
-            pickerView.selectRow(1, inComponent: 0, animated: false)
-        } else if task.category ==  "買い物" {  
-            pickerView.selectRow(2, inComponent: 0, animated: false)
-        }
         
+//        dataList = []
+//        for i in 0..<categoryArray.count {
+//            if categoryArray[i].categoryName == task.category {
+//                pickerView.selectRow(i, inComponent: 0, animated: false)
+//            }
+//            dataList.append(categoryArray[i].categoryName)
+//        }
+//
+//        if task.category == "勉強" {
+//            pickerView.selectRow(0, inComponent: 0, animated: false)
+//        } else if task.category ==  "遊び" {
+//            pickerView.selectRow(1, inComponent: 0, animated: false)
+//        } else if task.category ==  "買い物" {
+//            pickerView.selectRow(2, inComponent: 0, animated: false)
+//        }
+
         // 背景をタップしたらdismissKeyboardメソッドを呼ぶように設定する
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(dismissKeyboard))
         self.view.addGestureRecognizer(tapGesture)
@@ -61,12 +73,62 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
         titleTextField.text = task.title
         contentsTextView.text = task.contents
         datePicker.date = task.date
-        // カテゴリーを追加
-//        categoryTextField.text = task.category
-        
-        
     }
  
+    // カテゴリー作成ボタンを押した時に実行されるメソッド
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 遷移させる
+        performSegue(withIdentifier: "toMakeCategory",sender: nil)
+    }
+    // segue で画面遷移する時に呼ばれる
+    // Categoryクラスのインスタンスを生成してMakeCategoryViewControllerのcategoryプロパティに値を指定
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        let makeCategoryViewController:MakeCategoryViewController = segue.destination as! MakeCategoryViewController
+        let categoryData = Category()
+        let allCategoryData = realm.objects(Category.self)
+        if allCategoryData.count != 0 {
+            categoryData.id = allCategoryData.max(ofProperty: "id")! + 1
+        }
+        makeCategoryViewController.category = categoryData
+    }
+    
+    // MakeCategoryViewController(カテゴリー作成画面)から戻ってきた時
+    
+    override func viewWillAppear(_ animated: Bool) {
+        categoryArray = realm.objects(Category.self)
+        dataList = ["勉強", "遊び", "買い物"]
+        print("これが\(categoryArray)最新版のpickerViewリストだよ")
+        print(categoryArray.count)
+        for i in 3..<categoryArray.count {
+            
+            dataList.append(categoryArray[i].categoryName)
+        }
+        print(dataList)
+        pickerView.reloadAllComponents()
+        
+        let index = dataList.firstIndex(of: task.category) ?? 0
+        pickerView.selectRow(index, inComponent: 0, animated: false)
+    }
+    
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        categoryArray = realm.objects(Category.self)
+//        dataList = []
+//        print("これが\(categoryArray)最新版のpickerViewリストだよ")
+//        print(categoryArray.count)
+//        for i in 0..<categoryArray.count {
+//            if categoryArray[i].categoryName == task.category {
+//                pickerView.selectRow(i, inComponent: 0, animated: false)
+//            }
+//            dataList.append(categoryArray[i].categoryName)
+//        }
+//        print(dataList)
+//        pickerView.reloadAllComponents()
+//    }
+    
+    
+    
+    
     // 遷移元に戻る際にタスクの内容をデータベースに保存する
     override func viewWillDisappear(_ animated: Bool) {
         try! realm.write {
@@ -90,24 +152,24 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-    
+
     // UIPickerViewの行数、要素の全数
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return dataList.count
     }
-    
+
     // UIPickerViewに表示する配列
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return dataList[row]
     }
-    
+
     // UIPickerViewのRowが選択された時の挙動
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         // 処理
         print(" \(dataList[row]) が選択された。")
 //        categoryTextField.text = dataList[row]
         selectedCategory = dataList[row]
-        
+
     }
     
     // タスクのローカル通知を登録する --- ここから ---

@@ -16,10 +16,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet weak var searchText: UISearchBar!
     
-    
     // Realmインスタンスを取得する
     let realm = try! Realm()
-   
     
     // DB内のタスクが格納されるリスト。
     // 日付近い順\順でソート：降順
@@ -35,6 +33,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // サーチバー初期設定
         searchText.delegate = self
         searchText.placeholder = "カテゴリーを入力してください"
+        
+        // Categoryクラスに関して、realmに初期値として追加するデータを用意
+        // id = 4以降はMakeCategoryViewControllerで新規作成する予定
+//        let categoryData1 = Category()
+//        categoryData1.id = 1
+//        categoryData1.categoryName = "勉強"
+//        // データを追加
+//        try! realm.write() {
+//            realm.add(categoryData1, update: true)
+//        }
+//        let categoryData2 = Category()
+//        categoryData2.id = 2
+//        categoryData2.categoryName = "遊び"
+//        // データを追加
+//        try! realm.write() {
+//            realm.add(categoryData2, update: true)
+//        }
+//        let categoryData3 = Category()
+//        categoryData3.id = 3
+//        categoryData3.categoryName = "買い物"
+//        // データを追加
+//        try! realm.write() {
+//            realm.add(categoryData3, update: true)
+//        }
         
     }
     
@@ -53,8 +75,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         // TableView を更新する
         tableView.reloadData()
+        searchBar.showsCancelButton = true
     }
 
+    // キャンセルボタンがタップされた時
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+    }
+    
 // パターン２(検索文字列が何もない場合の解消)
 //    // サーチバー 検索ボタンをクリック時
 //    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -81,7 +110,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //
 //    }
 //
-    
     
     // MARK: UITableViewDataSourceプロトコルのメソッド
     // データの数（＝セルの数）を返すメソッド

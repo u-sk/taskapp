@@ -7,16 +7,17 @@
 //
 
 import UIKit
-//import RealmSwift
+import RealmSwift
+import UserNotifications
 
 class MakeCategoryViewController: UIViewController,  UITextFieldDelegate {
 
    @IBOutlet weak var makeCategoryTextField: UITextField!
     
-//    // Realmインスタンスを取得
-//    let realm = try! Realm()
-//    // categoryを定義
-//    var category: Category!
+    // Realmインスタンスを取得
+    let realm = try! Realm()
+    // categoryを定義
+    var category: Category!
     
     // DB内のタスクが格納されるリスト。
     // 日付近い順\順でソート：降順
@@ -31,32 +32,24 @@ class MakeCategoryViewController: UIViewController,  UITextFieldDelegate {
         makeCategoryTextField.delegate = self
     }
     
-//    // 遷移元に戻る際にタスクの内容をデータベースに保存する
-//    override func viewWillDisappear(_ animated: Bool) {
-//        try! realm.write {
-//            // カテゴリーを追加
-//            self.category.categoryName = self.makeCategoryTextField.text!
-//            self.realm.add(self.category, update: true)
-//
-//            // Realmデータベースファイルまでのパスを表示
-//            print(Realm.Configuration.defaultConfiguration.fileURL!)
-//        }
-//        super.viewWillDisappear(animated)
-//    }
-    
-    
     // 追加ボタンが押されたとき
     @IBAction func pushCategoryButton(_ sender: Any) {
-        print(makeCategoryTextField.text!)
-        
-        
-//        func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//            // segueから遷移先のInputViewControllerを取得する
-//            let inputViewController:InputViewController = segue.destination as! InputViewController
-//            // 遷移先のResultViewControllerで宣言しているdateListに値を代入して渡す
-//            inputViewController.x = makeCategoryTextField.text!
-//        }
-        
+        // カテゴリー作成欄が空文字の場合、カテゴリー作成しない
+        if let title = makeCategoryTextField.text {
+            if title.isEmpty {
+                return
+            } else {
+                print(makeCategoryTextField.text!)
+                try! realm.write {
+                    // カテゴリーを追加
+                    self.category.categoryName = self.makeCategoryTextField.text!
+                    self.realm.add(self.category, update: true)
+                    
+                    // Realmデータベースファイルまでのパスを表示
+                    print(Realm.Configuration.defaultConfiguration.fileURL!)
+            }
+        }
+        }
     }
     
     /*
